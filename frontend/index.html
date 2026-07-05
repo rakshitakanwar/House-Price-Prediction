@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>House Price Predictor</title>
+
+    <style>
+
+        body{
+            margin:0;
+            padding:40px;
+            background:#f4f6f9;
+            font-family:Arial, Helvetica, sans-serif;
+            display:flex;
+            justify-content:center;
+        }
+
+        .card{
+            width:450px;
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0px 5px 15px rgba(0,0,0,.15);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .form-group{
+            margin-bottom:18px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:5px;
+            box-sizing:border-box;
+        }
+
+        button{
+
+            width:100%;
+            padding:12px;
+            background:#1976d2;
+            color:white;
+            border:none;
+            border-radius:5px;
+            font-size:18px;
+            cursor:pointer;
+
+        }
+
+        button:hover{
+
+            background:#125aa3;
+
+        }
+
+        #result{
+
+            display:none;
+            margin-top:20px;
+            padding:15px;
+            border-radius:5px;
+            background:#d4edda;
+            color:#155724;
+            text-align:center;
+            font-size:20px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>🏡 House Price Predictor</h2>
+
+<div class="form-group">
+
+<label>Living Area (sq ft)</label>
+
+<input
+type="number"
+id="living_area"
+placeholder="Enter Living Area">
+
+</div>
+
+<div class="form-group">
+
+<label>Number of Rooms</label>
+
+<input
+type="number"
+id="number_of_rooms"
+placeholder="Enter Number of Rooms">
+
+</div>
+
+<div class="form-group">
+
+<label>Postal Code</label>
+
+<input
+type="number"
+id="postal_code"
+placeholder="Enter Postal Code">
+
+</div>
+
+<button onclick="predictPrice()">
+
+Predict House Price
+
+</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function predictPrice(){
+
+    const payload={
+
+        living_area:Number(document.getElementById("living_area").value),
+
+        number_of_rooms:Number(document.getElementById("number_of_rooms").value),
+
+        postal_code:Number(document.getElementById("postal_code").value)
+
+    };
+
+    try{
+
+        const response=await fetch("predict",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify(payload)
+
+        });
+
+        const data=await response.json();
+
+        document.getElementById("result").style.display="block";
+
+        document.getElementById("result").innerHTML=
+        "<b>Predicted Price :</b> ₹ "+Number(data["Predicted Price"]).toLocaleString();
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        alert("Cannot connect to Flask Backend.");
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
