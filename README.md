@@ -1,4 +1,4 @@
-# 🏡 House Price Prediction
+# Flask-MLops-Project
 A Machine Learning based web application that predicts house prices based on user inputs such as Living Area, Number of Rooms, and Postal Code.
 ## 🚀 Features
 - Predicts house prices using a trained Machine Learning model
